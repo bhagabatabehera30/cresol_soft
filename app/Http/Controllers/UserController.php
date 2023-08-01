@@ -22,17 +22,30 @@ class UserController extends Controller
     {
         if($request->ajax()) {
             $user = User::select('*');
-            return DataTables::of($user)
+            return DataTables::eloquent($user)
             ->addIndexColumn()
             ->addColumn('hobbies', function($row){
                 $userHobbies=UserHobby::where('user_id',$row->id)->get();
                 //dd($userHobbies);
-                $hobbiStr='';
+                $hobbiStr=[];
                 foreach ($userHobbies as $key => $userHobbie) {
-                    //dd($userHobbie);
-                    $hobbiStr.=($userHobbie->hobby) ? $userHobbie->hobby->hobbie_name.', ' : '';
+                    $hobby=($userHobbie->hobby) ? $userHobbie->hobby->hobbie_name : null;
+                    if($hobby!=null){
+                        $hobbiStr[]=$hobby;
+                    }
                 }
-                return $hobbiStr;
+                if(!empty($hobbiStr)){
+                    return implode(',', $hobbiStr);
+                }else{
+                    return null;
+                } 
+            })
+            ->filterColumn('hobbies', function ($query, $keyword) {
+                $query->whereHas('userHobbies', function ($q) use ($keyword) {
+                    $q->whereHas('hobby', function ($q2) use ($keyword) {
+                        $q2->whereRaw("hobbie_name like ?", ["%$keyword%"]);
+                    });
+                });
             })
             ->addColumn('action', function($row){
                 $btn = '<a href="'.route('user.edit', $row->id).'" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></a>&nbsp;';
@@ -40,7 +53,8 @@ class UserController extends Controller
                 return $btn;
             })
             ->rawColumns(['hobbies','action'])
-            ->make(true);
+            ->toJson();
+            //->make(true);
         }
     }
     public function create()
