@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Validator;
+//use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\JsonResponse;
 
 class RegisteredUserController extends Controller
 {
@@ -28,24 +31,37 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request): JsonResponse
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+        $validator = Validator::make($request->all(), [
+            'first_name' => ['required', 'string', 'max:255'],
+            'mobile' => ['required', 'string', 'max:10', 'unique:'.User::class],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()]
         ]);
+  
+        if ($validator->fails()){
+            return response()->json([
+                    "status" => false,
+                    "errors" => $validator->errors()
+                ]);
+        }
 
         $user = User::create([
-            'name' => $request->name,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
             'email' => $request->email,
+            'mobile' => $request->mobile,
             'password' => Hash::make($request->password),
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
-
-        return redirect(RouteServiceProvider::HOME);
+        return response()->json([
+            "status" => true,
+            "redirect" => url('dashboard')
+        ]);
+        //return redirect(RouteServiceProvider::HOME);
     }
 }

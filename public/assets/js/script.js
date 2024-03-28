@@ -130,7 +130,7 @@ Version      : 1.3
 
 	// Check all email
 	
-	$(document).on('click', '#check_all', function() {
+	/*$(document).on('click', '#check_all', function() {
 		$('.checkmail').click();
 		return false;
 	});
@@ -145,15 +145,16 @@ Version      : 1.3
 			});
 		});
 	}
+	*/
 	
 	// Mail important
 	
-	$(document).on('click', '.mail-important', function() {
+	/* $(document).on('click', '.mail-important', function() {
 		$(this).find('i.fa').toggleClass('fa-star').toggleClass('fa-star-o');
 	});
-	
+	*/
 	// Summernote
-	
+	/*
 	if($('.summernote').length > 0) {
 		$('.summernote').summernote({
 			height: 200,                 // set editor height
@@ -183,7 +184,7 @@ Version      : 1.3
             selector: 'a'
         });
     }
-	
+	*/
 	// Sidebar Slimscroll
 
 	if($slimScrolls.length > 0) {
@@ -218,8 +219,8 @@ Version      : 1.3
 			$('.subdrop + ul').slideUp();
 		}
 		setTimeout(function(){ 
-			mA.redraw();
-			mL.redraw();
+			//mA.redraw();
+			//mL.redraw();
 		}, 300);
 		return false;
 	});

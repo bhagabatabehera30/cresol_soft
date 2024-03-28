@@ -35,26 +35,27 @@
     <!-- Datatables JS -->
     <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/datatables/datatables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('assets/js/script.js') }}"></script>
     
-
         <!--[if lt IE 9]>
             <script src="assets/js/html5shiv.min.js"></script>
             <script src="assets/js/respond.min.js"></script>
         <![endif]-->
         </head>
         <body>
-
+        @if(Auth::check())
             <!-- Header -->
             <div class="header">
 
                 <!-- Logo -->
                 <div class="header-left">
                     <a href="#" class="logo">
-                        Cresol Infoserv
+                    {{ config('app.name', 'AutomatedprosAssignment') }}
                         <!-- <img src="{{ asset('assets/img/logo.svg') }}" alt="Logo"> -->
                     </a>
                     <a href="#" class="logo logo-small">
-                        <img src="{{ asset('assets/img/logo.svg') }}" alt="Logo" width="30" height="30">
+                        <!--<img src="{{ asset('assets/img/logo.svg') }}" alt="Logo" width="30" height="30">-->
                     </a>
                 </div>
                 <!-- /Logo -->
@@ -109,6 +110,8 @@
                 
             </div>
             @include('layouts.navigation')
+            @else
+            @endif
 
             {{ $slot }}
 

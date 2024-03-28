@@ -6,10 +6,13 @@
                     <span>Main</span>
                 </li>
                 <li> 
-                    <a href="{{ route('users.list') }}"><i class="fe fe-home"></i> <span>Users</span></a>
+                    <a href="{{ route('users.list') }}"><i class="fe fe-users"></i> <span>User List</span></a>
                 </li>
                 <li> 
-                    <a href="{{ route('user.create') }}"><i class="fe fe-layout"></i> <span>Create User</span></a>
+                    <a href="{{ route('ajax-file-upload') }}"><i class="fa fa-files-o"></i> <span>Ajax File Upload</span></a>
+                </li>
+                <li> 
+                    <a href="{{ route('logout') }}"><i class="fa fa-sign-out"></i> <span>Logout</span></a>
                 </li>
 
             </ul>

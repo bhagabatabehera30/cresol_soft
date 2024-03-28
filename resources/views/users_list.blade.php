@@ -28,7 +28,9 @@
                 <div class="card">
                     <div class="card-header">
                         <h4 class="card-title">Users</h4>
-                        <p style="text-align:right;"><a href="{{ route('user.create') }}" class="btn btn-primary"><i class="fe fe-layout"></i> <span>Create User</span></a></p>
+                        <p style="text-align:right;">
+                        <!--<a href="" class="btn btn-primary"><i class="fe fe-layout"></i> <span>Create User</span></a>
+--></p>
                     </div>
                     <div class="card-body">
 
@@ -39,8 +41,9 @@
                                         <th>ID</th>
                                         <th>First Name</th>
                                         <th>Last Name</th>
-                                        <th>Hobbies</th>
-                                        <th>Action</th>
+                                        <th>Email</th>
+                                        <th>Mobile Number</th>
+<!--<th>Action</th>-->
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -78,8 +81,9 @@
             {data: 'id', name: 'id'},
             {data: 'first_name', name: 'first_name'},
             {data: 'last_name', name: 'last_name'},
-            {data: 'hobbies', name: 'hobbies'},
-            {data: 'action', name: 'action'}
+            {data: 'email', name: 'email'},
+            {data: 'mobile', name: 'mobile'},
+            //{data: 'action', name: 'action'}
             ]
     });
 

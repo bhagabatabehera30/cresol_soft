@@ -20,20 +20,22 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
+    protected $guarded = [];
+    /*protected $fillable = [
         'first_name',
         'last_name'
     ];
+    */
 
     /**
      * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>
      */
-   /* protected $hidden = [
+    protected $hidden = [
         'password',
         'remember_token',
-    ];*/
+    ];
 
     /**
      * The attributes that should be cast.
@@ -46,9 +48,10 @@ class User extends Authenticatable
     ];*/
 
 
-    public function userHobbies(): HasMany
+   /* public function userHobbies(): HasMany
     {
         return $this->hasMany(UserHobby::class,'user_id');
     }
+    */
     
 }

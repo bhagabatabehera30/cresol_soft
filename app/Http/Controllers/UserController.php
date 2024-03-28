@@ -25,61 +25,22 @@ class UserController extends Controller
             //dd($searchValue);
             $user = User::select('*');
             $dataTableObj=DataTables::eloquent($user)
-            ->addIndexColumn()
-            ->addColumn('hobbies', function($row){
-                $userHobbies=UserHobby::where('user_id',$row->id)->get();
-                $hobbiStr=[];
-                foreach ($userHobbies as $key => $userHobbie) {
-                    $hobby=($userHobbie->hobby) ? $userHobbie->hobby->hobbie_name : null;
-                    if($hobby!=null){
-                        $hobbiStr[]=$hobby;
-                    }
-                }
-                if(!empty($hobbiStr)){
-                    return implode(',', $hobbiStr);
-                }else{
-                    return null;
-                } 
-            });
+            ->addIndexColumn();
             
             $keyword=$searchValue;
             $usersArr=[];
             if($keyword!=null){
-                $usersArr=UserHobby::whereHas('hobby', function ($query) use ($keyword) {
-                    if($keyword!=null && strpos($keyword, ',')!==false){
-                        $keywordArr=explode(',', $keyword);
-                        $f=1;
-                        foreach ($keywordArr as $key => $rsVal) {
-                            if($rsVal!=null){
-                               if($f==1){
-                                $query->whereRaw("hobbie_name like ?", ["%$rsVal%"]);
-                            }else{
-                              $query->orWhereRaw("hobbie_name like ?", ["%$rsVal%"]);  
-                          }
-                      }
-                      $f++;
-                  }
-              }else{
-                $query->whereRaw("hobbie_name like ?", ["%$keyword%"]);
-            }
-        })->pluck('user_id')->toArray();
-                if(!empty($usersArr)){
-                    $usersArr=array_unique($usersArr);
-                    $usersArr=array_values($usersArr);
-                }
             }
             if(!empty($usersArr)){
-               $dataTableObj->filterColumn('hobbies', function ($q) use ($usersArr) {
-                   $q->orWhereIn("id", $usersArr);
-               });
            }
 
            $dataTableObj=$dataTableObj->addColumn('action', function($row){
-            $btn = '<a href="'.route('user.edit', $row->id).'" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></a>&nbsp;';
-            $btn .= '<a href="'.route('user.destroy', $row->id).'" onclick="return confirm(\'are you sure to delete?\')" class="btn btn-danger btn-xs" title="delete"><i class="fa fa-remove"></i></a>';
-            return $btn;
+            //$btn = '<a href="'.route('user.edit', $row->id).'" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></a>&nbsp;';
+           // $btn .= '<a href="'.route('user.destroy', $row->id).'" onclick="return confirm(\'are you sure to delete?\')" class="btn btn-danger btn-xs" title="delete"><i class="fa fa-remove"></i></a>';
+           $btn=''; 
+           return $btn;
         })
-           ->rawColumns(['hobbies','action'])
+           ->rawColumns(['action'])
            ->toJson();
            return $dataTableObj;
        }
